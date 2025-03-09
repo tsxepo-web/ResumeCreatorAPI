@@ -1,18 +1,34 @@
+using ResumeCreatorAPI.Features.Resume;
+using ResumeCreatorAPI.Features.Resume.CreateResume;
+using ResumeCreatorAPI.Infrastructure.MongoDb;
+using ResumeCreatorAPI.Infrastructure.Persistence;
+using ResumeCreatorAPI.Infrastructure.Services;
+using Scalar.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddOpenApi();
+builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+builder.Services.AddSingleton<MongodbContext>();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddScoped<TemplateService>();
+builder.Services.AddScoped<IResumeRepository, ResumeRepository>();
+builder.Services.AddScoped<ITemplateService , TemplateService>();
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
+CreateResumeEndpoint.MapCreateResumeEndpoint(app);
 
 var summaries = new[]
 {
