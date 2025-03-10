@@ -9,7 +9,7 @@ namespace ResumeCreatorAPI.Features.Resume
         {
             endpoint.MapPost(
                 "api/resume",
-                async (CreateResumeRequest request, ISender sender) =>
+                async (CreateResumeCommand request, ISender sender) =>
                 {
                     var response = await sender.Send(request);
                     return Results.Ok(response);

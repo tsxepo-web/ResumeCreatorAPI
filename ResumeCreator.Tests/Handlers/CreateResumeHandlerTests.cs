@@ -23,7 +23,7 @@ namespace ResumeCreator.Tests.Handlers
         [Fact]
         public async Task Handle_Should_CreateResume_and_ReturnResponse()
         {
-            var request = new CreateResumeRequest(
+            var request = new CreateResumeCommand(
                 new PersonalInfo { Name = "John Doe" },
                 new List<Education>(),
                 new List<Skill>(),

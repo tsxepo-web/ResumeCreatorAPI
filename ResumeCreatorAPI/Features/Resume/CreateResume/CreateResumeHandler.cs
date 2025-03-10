@@ -4,7 +4,7 @@ using ResumeCreatorAPI.Infrastructure.Services;
 
 namespace ResumeCreatorAPI.Features.Resume.Commands
 {
-    public class CreateResumeHandler : IRequestHandler<CreateResumeRequest, CreateResumeResponse>
+    public class CreateResumeHandler : IRequestHandler<CreateResumeCommand, CreateResumeResponse>
     {
         private readonly IResumeRepository _resumeRepository;
         private readonly ITemplateService _templateService;
@@ -14,7 +14,7 @@ namespace ResumeCreatorAPI.Features.Resume.Commands
             _templateService = templateService;
         }   
 
-        public async Task<CreateResumeResponse> Handle(CreateResumeRequest request, CancellationToken cancellationToken)
+        public async Task<CreateResumeResponse> Handle(CreateResumeCommand request, CancellationToken cancellationToken)
         {
             var resume = new Domain.Resume(
 
