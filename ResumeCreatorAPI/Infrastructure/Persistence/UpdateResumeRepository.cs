@@ -1,10 +1,11 @@
 using MongoDB.Driver;
 using ResumeCreatorAPI.Domain;
+using ResumeCreatorAPI.Features.Resume.UpdateResume;
 using ResumeCreatorAPI.Infrastructure.MongoDb;
 
 namespace ResumeCreatorAPI.Infrastructure.Persistence
 {
-    public class UpdateResumeRepository
+    public class UpdateResumeRepository : IUpdateResumeRepository
     {
         private readonly IMongoCollection<Resume> _resumeCollection;
         public UpdateResumeRepository(MongodbContext context) => _resumeCollection = context.Resumes;

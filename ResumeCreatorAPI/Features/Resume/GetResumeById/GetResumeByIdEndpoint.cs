@@ -7,7 +7,7 @@ namespace ResumeCreatorAPI.Features.Resume.GetResumeById
         public static void MapGetResumeByIdEndpoint(IEndpointRouteBuilder endpoint)
         {
             endpoint.MapGet(
-                "api/resume{id}", async (string id, IMediator mediator) =>
+                "api/resume{id}", async (string id,  IMediator mediator) =>
                 {
                     var response = await mediator.Send(new GetResumeByIdQuery(id));
 

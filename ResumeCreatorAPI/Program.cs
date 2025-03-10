@@ -1,7 +1,9 @@
 using ResumeCreatorAPI.Features.Resume;
 using ResumeCreatorAPI.Features.Resume.CreateResume;
+using ResumeCreatorAPI.Features.Resume.DeleteResume;
 using ResumeCreatorAPI.Features.Resume.GetResume;
 using ResumeCreatorAPI.Features.Resume.GetResumeById;
+using ResumeCreatorAPI.Features.Resume.UpdateResume;
 using ResumeCreatorAPI.Infrastructure.MongoDb;
 using ResumeCreatorAPI.Infrastructure.Persistence;
 using ResumeCreatorAPI.Infrastructure.Services;
@@ -19,6 +21,8 @@ builder.Services.AddScoped<ITemplateService , TemplateService>();
 builder.Services.AddScoped<IResumeRepository, ResumeRepository>();
 builder.Services.AddScoped<IGetAllResumesRepository, GetAllResumeRepository>();
 builder.Services.AddScoped<IGetResumeByIdRepository, GetResumeByIdRepository>();
+builder.Services.AddScoped<IUpdateResumeRepository, UpdateResumeRepository>();
+builder.Services.AddScoped<IDeleteResumeRepository, DeleteResumeRepository>();
 
 
 var app = builder.Build();
@@ -33,29 +37,8 @@ app.UseHttpsRedirection();
 CreateResumeEndpoint.MapCreateResumeEndpoint(app);
 GetAllResumesEndpoint.MapGetAllResumeEndpoint(app);
 GetResumeByIdEndpoint.MapGetResumeByIdEndpoint(app);
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+UpdateResumeEndpoint.MapUpdateResumeEndpoint(app);
+DeleteResumeEndpoint.MapDeleteResumeEndpoint(app);
 
 app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
