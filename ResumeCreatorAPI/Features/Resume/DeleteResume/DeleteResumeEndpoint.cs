@@ -7,7 +7,7 @@ namespace ResumeCreatorAPI.Features.Resume.DeleteResume
         public static void MapDeleteResumeEndpoint(IEndpointRouteBuilder endpoint)
         {
             endpoint.MapDelete(
-                "api/resumes/{id}", async (string id, ISender sender) =>
+                "api/resume/{id}", async (string id, ISender sender) =>
                 {
                     var result = await sender.Send(new DeleteResumeCommand(id));
 

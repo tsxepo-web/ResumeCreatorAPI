@@ -11,7 +11,8 @@ namespace ResumeCreatorAPI.Features.Resume.GetResumeById
         }
         public async Task<GetResumeByIdResponse> Handle(GetResumeByIdQuery request, CancellationToken cancellationToken)
         {
-            var resume = await _repository.GetResumeByIdAsync(request.Id, cancellationToken);
+                  
+            var resume = await _repository.GetResumeByIdAsync(request.Id, cancellationToken) ?? throw new KeyNotFoundException($"Resume with ID {request.Id} not found.");
             return new GetResumeByIdResponse(resume);
         }
     }

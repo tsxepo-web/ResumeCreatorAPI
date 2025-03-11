@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MediatR;
 
 namespace ResumeCreatorAPI.Features.Resume.UpdateResume
@@ -11,7 +7,7 @@ namespace ResumeCreatorAPI.Features.Resume.UpdateResume
         public static void MapUpdateResumeEndpoint(IEndpointRouteBuilder endpoint)
         {
             endpoint.MapPut(
-                "api/resume{id}", async (string id, UpdateResumeCommand command, IMediator mediator) =>
+                "api/resume/{id}", async (string id, UpdateResumeCommand command, IMediator mediator) =>
                 {
                     if (id != command.Id)
                     {

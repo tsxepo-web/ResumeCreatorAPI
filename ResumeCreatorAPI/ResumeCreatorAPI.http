@@ -1,6 +1,19 @@
 @ResumeCreatorAPI_HostAddress = http://localhost:5074
 
+
 GET {{ResumeCreatorAPI_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+POST {{ResumeCreatorAPI_HostAddress}}/api/resumes
+Content-Type: application/json
+
+{
+  "personalInfo": { "name": "John Doe" },
+  "educations": [],
+  "experiences": [],
+  "skills": [],
+  "certifications": [],
+  "templateStyle": "Modern"
+}
