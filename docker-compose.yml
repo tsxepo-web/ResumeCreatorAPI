@@ -1,4 +1,17 @@
 services:   
+  resumecreatorapi:
+    image: resumecreatorapi
+    container_name: resumecreatorapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5074:5074"
+    depends_on:
+      - mongodb
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
   mongodb:
     image: mongo:latest
     container_name: mongodb
@@ -8,18 +21,6 @@ services:
     volumes:
       - mongodb_data:/data/db
 
-  resumecreatorapi:
-    image: resumecreatorapi
-    container_name: resumecreatorapi
-    build:
-      context: .
-      dockerfile: ResumeCreatorAPI/Dockerfile
-    ports:
-      - "5074:5074"
-    depends_on:
-      - mongodb
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
 
 volumes:
   mongodb_data: 
