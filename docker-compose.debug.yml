@@ -3,7 +3,7 @@ services:
     image: resumecreatorapi
     build:
       context: .
-      dockerfile: ResumeCreatorAPI/Dockerfile
+      dockerfile: Dockerfile
       args:
         - configuration=Debug
     ports:

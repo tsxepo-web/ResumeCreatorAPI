@@ -4,7 +4,7 @@ services:
     container_name: resumecreatorapi
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.Api
     ports:
       - "5074:5074"
     depends_on:
