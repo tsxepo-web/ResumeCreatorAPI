@@ -4,8 +4,11 @@ using ResumeCreatorAPI.Features.Resume.DeleteResume;
 using ResumeCreatorAPI.Features.Resume.GetResume;
 using ResumeCreatorAPI.Features.Resume.GetResumeById;
 using ResumeCreatorAPI.Features.Resume.UpdateResume;
+using ResumeCreatorAPI.Features.User.CreateUser;
+using ResumeCreatorAPI.Features.User.GetUserByEmail;
 using ResumeCreatorAPI.Infrastructure.MongoDb;
 using ResumeCreatorAPI.Infrastructure.Persistence;
+using ResumeCreatorAPI.Infrastructure.Persistence.User;
 using ResumeCreatorAPI.Infrastructure.Services;
 using Scalar.AspNetCore;
 
@@ -23,6 +26,17 @@ builder.Services.AddScoped<IGetAllResumesRepository, GetAllResumeRepository>();
 builder.Services.AddScoped<IGetResumeByIdRepository, GetResumeByIdRepository>();
 builder.Services.AddScoped<IUpdateResumeRepository, UpdateResumeRepository>();
 builder.Services.AddScoped<IDeleteResumeRepository, DeleteResumeRepository>();
+builder.Services.AddScoped<ICreateUserRepository, CreateUserRepository>();
+builder.Services.AddScoped<IGetUserByEmailRepository, GetUserByEmailRepository>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins", builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 
 var app = builder.Build();
@@ -32,6 +46,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+app.UseCors("AllowAllOrigins");
 
 app.UseHttpsRedirection();
 CreateResumeEndpoint.MapCreateResumeEndpoint(app);
@@ -39,6 +54,8 @@ GetAllResumesEndpoint.MapGetAllResumeEndpoint(app);
 GetResumeByIdEndpoint.MapGetResumeByIdEndpoint(app);
 UpdateResumeEndpoint.MapUpdateResumeEndpoint(app);
 DeleteResumeEndpoint.MapDeleteResumeEndpoint(app);
+CreateUserEndpoint.MapCreateUserEndpoint(app);
+GetUserByEmailEndpoint.MapGetResumeByEmailEndpoint(app);
 
 app.Run();
 

@@ -15,9 +15,11 @@ namespace ResumeCreatorAPI.Features.Resume.UpdateResume
 
         public async Task<UpdateResumeResponse> Handle(UpdateResumeCommand request, CancellationToken cancellationToken)
         {
+            Console.WriteLine($"Received update request for ID: {request.Id}");
             var existingResume = await _getResumeByIdRepository.GetResumeByIdAsync(request.Id, cancellationToken);
             if (existingResume == null)
             {
+                Console.WriteLine("Resume not found in DB.");
                 return new UpdateResumeResponse(false, $"Resume with ID {request.Id} not found.");
             }
             existingResume.PersonalInfo = request.PersonalInfo;
@@ -27,7 +29,7 @@ namespace ResumeCreatorAPI.Features.Resume.UpdateResume
             existingResume.Certifications = request.Certifications;
             existingResume.TemplateStyle = request.TemplateStyle;
 
-            var updated = await _repository.UpdateResumeAsync(request.Id,existingResume, cancellationToken);
+            var updated = await _repository.UpdateResumeAsync(existingResume, cancellationToken);
             
             return updated
                 ? new UpdateResumeResponse(true, "Resume updated successfully.")

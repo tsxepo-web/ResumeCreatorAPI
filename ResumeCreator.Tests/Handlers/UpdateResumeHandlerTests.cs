@@ -44,7 +44,7 @@ namespace ResumeCreator.Tests.Handlers
            .ReturnsAsync(resume);
 
             _mockRepository
-                .Setup(repo => repo.UpdateResumeAsync(It.IsAny<string>(), It.IsAny<Resume>(), It.IsAny<CancellationToken>()))
+                .Setup(repo => repo.UpdateResumeAsync(It.IsAny<Resume>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(true);
 
             var result = await _handler.Handle(updateCommand, CancellationToken.None);
@@ -53,7 +53,7 @@ namespace ResumeCreator.Tests.Handlers
             Assert.Equal("Resume updated successfully.", result.Message);
 
             _mockGetByIdRepository.Verify(r => r.GetResumeByIdAsync("1", It.IsAny<CancellationToken>()), Times.Once);
-            _mockRepository.Verify(r => r.UpdateResumeAsync(It.IsAny<string>(), It.IsAny<Resume>(), It.IsAny<CancellationToken>()), Times.Once);
+            _mockRepository.Verify(r => r.UpdateResumeAsync(It.IsAny<Resume>(), It.IsAny<CancellationToken>()), Times.Once);
 
 
         }
@@ -83,7 +83,7 @@ namespace ResumeCreator.Tests.Handlers
             Assert.Equal("Resume with ID 999 not found.", result.Message);
 
             _mockGetByIdRepository.Verify(r => r.GetResumeByIdAsync("999", It.IsAny<CancellationToken>()), Times.Once);
-            _mockRepository.Verify(r => r.UpdateResumeAsync(It.IsAny<string>(), It.IsAny<Resume>(), It.IsAny<CancellationToken>()), Times.Never);
+            _mockRepository.Verify(r => r.UpdateResumeAsync(It.IsAny<Resume>(), It.IsAny<CancellationToken>()), Times.Never);
         }
     }
 }

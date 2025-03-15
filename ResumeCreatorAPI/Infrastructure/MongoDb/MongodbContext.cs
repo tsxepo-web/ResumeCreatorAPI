@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using ResumeCreatorAPI.Domain;
+using ResumeCreatorAPI.Domain.Users;
 
 namespace ResumeCreatorAPI.Infrastructure.MongoDb
 {
@@ -24,5 +25,6 @@ namespace ResumeCreatorAPI.Infrastructure.MongoDb
         }
 
         public IMongoCollection<Resume> Resumes => _database.GetCollection<Resume>("Resumes");
+        public IMongoCollection<User> Users => _database.GetCollection<User>("Users");
     }
 }

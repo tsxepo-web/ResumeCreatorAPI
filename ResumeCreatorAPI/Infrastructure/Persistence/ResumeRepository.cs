@@ -7,8 +7,12 @@ namespace ResumeCreatorAPI.Infrastructure.Persistence
 {
     public class ResumeRepository : IResumeRepository
     {
-        IMongoCollection<Resume> _resumeCollection;
-        public ResumeRepository(MongodbContext context) => _resumeCollection = context.Resumes;
+        private readonly IMongoCollection<Resume> _resumeCollection;
+        public ResumeRepository(MongodbContext context)
+        {
+            _resumeCollection = context.Resumes;
+        }
+
         public async Task AddResumeAsync(Resume resume, CancellationToken cancellationToken)
         {
             await _resumeCollection.InsertOneAsync(resume, cancellationToken: cancellationToken);

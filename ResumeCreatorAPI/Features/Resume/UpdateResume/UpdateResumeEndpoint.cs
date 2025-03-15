@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ResumeCreatorAPI.Features.Resume.UpdateResume
 {
@@ -7,7 +8,7 @@ namespace ResumeCreatorAPI.Features.Resume.UpdateResume
         public static void MapUpdateResumeEndpoint(IEndpointRouteBuilder endpoint)
         {
             endpoint.MapPut(
-                "api/resume/{id}", async (string id, UpdateResumeCommand command, IMediator mediator) =>
+                "api/resume/{id}", async ([FromRoute] string id, [FromBody] UpdateResumeCommand command, IMediator mediator) =>
                 {
                     if (id != command.Id)
                     {
