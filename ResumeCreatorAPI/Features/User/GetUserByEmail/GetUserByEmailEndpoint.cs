@@ -4,7 +4,7 @@ namespace ResumeCreatorAPI.Features.User.GetUserByEmail
 {
     public class GetUserByEmailEndpoint
     {
-        public static void MapGetResumeByEmailEndpoint(IEndpointRouteBuilder endpoint)
+        public static void MapGetUserByEmailEndpoint(IEndpointRouteBuilder endpoint)
         {
             endpoint.MapGet(
                 "api/user/{email}", async (string email,  IMediator mediator) =>

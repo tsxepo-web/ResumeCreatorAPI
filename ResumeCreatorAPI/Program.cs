@@ -6,6 +6,8 @@ using ResumeCreatorAPI.Features.Resume.GetResumeById;
 using ResumeCreatorAPI.Features.Resume.UpdateResume;
 using ResumeCreatorAPI.Features.User.CreateUser;
 using ResumeCreatorAPI.Features.User.GetUserByEmail;
+using ResumeCreatorAPI.Features.User.GetUserByUsername;
+using ResumeCreatorAPI.Features.User.UpdateUserTier;
 using ResumeCreatorAPI.Infrastructure.MongoDb;
 using ResumeCreatorAPI.Infrastructure.Persistence;
 using ResumeCreatorAPI.Infrastructure.Persistence.User;
@@ -28,6 +30,9 @@ builder.Services.AddScoped<IUpdateResumeRepository, UpdateResumeRepository>();
 builder.Services.AddScoped<IDeleteResumeRepository, DeleteResumeRepository>();
 builder.Services.AddScoped<ICreateUserRepository, CreateUserRepository>();
 builder.Services.AddScoped<IGetUserByEmailRepository, GetUserByEmailRepository>();
+builder.Services.AddScoped<IGetUserByUsernameRepository, GetUserByUsernameRepository>();
+builder.Services.AddScoped<IUpdateUserTierRepository, UpdateUserTierRepository>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins", builder =>
@@ -55,7 +60,9 @@ GetResumeByIdEndpoint.MapGetResumeByIdEndpoint(app);
 UpdateResumeEndpoint.MapUpdateResumeEndpoint(app);
 DeleteResumeEndpoint.MapDeleteResumeEndpoint(app);
 CreateUserEndpoint.MapCreateUserEndpoint(app);
-GetUserByEmailEndpoint.MapGetResumeByEmailEndpoint(app);
+GetUserByEmailEndpoint.MapGetUserByEmailEndpoint(app);
+GetUserByUsernameEndpoint.MapGetUserByUsernameEndpoint(app);
+UpdateUserTierEndpoint.MapUpdateUserTierEndpoint(app);
 
 app.Run();
 

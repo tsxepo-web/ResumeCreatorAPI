@@ -1,45 +1,25 @@
 using MongoDB.Driver;
+using ResumeCreatorAPI.Features.User.UpdateUserTier;
+using ResumeCreatorAPI.Infrastructure.MongoDb;
 
 namespace ResumeCreatorAPI.Infrastructure.Persistence.User
 {
-    public class UpdateUserTierRepository
+    public class UpdateUserTierRepository : IUpdateUserTierRepository
     {
         private readonly IMongoCollection<Domain.Users.User> _users;
-        public UpdateUserTierRepository(IMongoDatabase database)
+        public UpdateUserTierRepository(MongodbContext context)
         {
-            _users = database.GetCollection<Domain.Users.User>("Users");
+            _users = context.Users;
         }
 
-        public async Task UpdateUserTier(string userId, string newTier)
+        public async Task<bool> UpdateUserTierAsync(string email, string newTier)
         {
-            var update = Builders<Domain.Users.User>.Update.Set(u => u.Tier, newTier);
-            await _users.UpdateOneAsync(u => u.Id == userId, update);
-        }
+            var filter = Builders<Domain.Users.User>.Filter.Eq(user => user.Email, email);
+            var update = Builders<Domain.Users.User>.Update.Set(user => user.Tier, newTier);
 
-         public async Task<bool> CanCreateResume(string userId)
-        {
-            var user = await _users.Find(u => u.Id == userId).FirstOrDefaultAsync();
-            if (user == null) return false;
+            var result = await _users.UpdateOneAsync(filter, update);
 
-            if (user.Tier == "free")
-            {
-                var resumeCount = await CountUserResumes(userId);
-                return resumeCount < 1;
-            }
-            else if (user.Tier == "paid")
-            {
-                var resumeCount = await CountUserResumes(userId);
-                return resumeCount < 2;
-            }
-
-            return false;
-        }
-
-        private async Task<int> CountUserResumes(string userId)
-        {
-            // var resumeService = new ResumeService(/* inject database here */);
-            // return await resumeService.CountResumesByUserId(userId); 
-            return 1;
+            return result.IsAcknowledged && result.ModifiedCount > 0;
         }
     }
 }
