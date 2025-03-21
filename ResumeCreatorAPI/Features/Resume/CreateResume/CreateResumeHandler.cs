@@ -1,10 +1,11 @@
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using ResumeCreatorAPI.Features.Resume.CreateResume;
 using ResumeCreatorAPI.Infrastructure.Services;
 
 namespace ResumeCreatorAPI.Features.Resume.Commands
 {
-    public class CreateResumeHandler : IRequestHandler<CreateResumeCommand, CreateResumeResponse>
+    public class CreateResumeHandler : IRequestHandler<CreateResumeCommand, Domain.Resume>
     {
         private readonly IResumeRepository _resumeRepository;
         private readonly ITemplateService _templateService;
@@ -14,20 +15,17 @@ namespace ResumeCreatorAPI.Features.Resume.Commands
             _templateService = templateService;
         }   
 
-        public async Task<CreateResumeResponse> Handle(CreateResumeCommand request, CancellationToken cancellationToken)
+        public async Task<Domain.Resume> Handle(CreateResumeCommand request, CancellationToken cancellationToken)
         {
-            var resume = new Domain.Resume(
+            var resumeCount = await _resumeRepository.CountUserResumesAsync(request.UserId);
 
-                request.PersonalInfo,
-                request.Educations,
-                request.Experiences,
-                request.Skills,
-                request.Certifications,
-                _templateService.GenerateTemplate(request.TemplateStyle)
-            );
-            await _resumeRepository.AddResumeAsync(resume, cancellationToken: cancellationToken);
+        if (resumeCount >= 1)
+        {
+            return null!;
+        }
+        await _resumeRepository.AddResumeAsync(request.Resume, cancellationToken: cancellationToken);
 
-            return new CreateResumeResponse(resume.Id!);
+        return request.Resume;
         }
     }
 

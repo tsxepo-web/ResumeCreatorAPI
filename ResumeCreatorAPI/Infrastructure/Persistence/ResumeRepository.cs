@@ -17,5 +17,10 @@ namespace ResumeCreatorAPI.Infrastructure.Persistence
         {
             await _resumeCollection.InsertOneAsync(resume, cancellationToken: cancellationToken);
         }
+
+        public async Task<long> CountUserResumesAsync(string email)
+        {
+            return await _resumeCollection.CountDocumentsAsync(resume => resume.PersonalInfo.Email == email);
+        }
     }
 }
