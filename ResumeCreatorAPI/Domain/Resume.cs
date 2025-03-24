@@ -1,36 +1,39 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ResumeCreatorAPI.Domain
+namespace ResumeCreatorAPI.Domain;
+
+public class Resume
 {
-    public class Resume
+
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? Id { get; set; }
+    public Basics? Basics { get; set; }
+    public List<Work>? Work { get; set; }
+    public List<Volunteer>? Volunteer { get; set; }
+    public List<Education>? Education { get; set; }
+    public List<Award>? Awards { get; set; }
+    public List<Certificate>? Certificates { get; set; }
+    public List<Publication>? Publications { get; set; }
+    public List<Skill>? Skills { get; set; }
+    public List<Languages>? Languages { get; set; }
+    public List<Interest>? Interests { get; set; }
+    public List<References>? References { get; set; }
+    public List<Project>? Projects { get; set; }
+
+    public Resume()
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
-
-        public PersonalInfo? PersonalInfo { get; set; }
-        public List<Education> Educations { get; set; }
-        public List<Experience> Experiences { get; set; }
-        public List<Skill> Skills { get; set; }
-        public List<Certification> Certifications { get; set; }
-        public string TemplateStyle { get; set; }
-
-        public Resume(
-            PersonalInfo? personalInfo,
-            List<Education>? educations,
-            List<Experience>? experiences,
-            List<Skill>? skills,
-            List<Certification>? certifications,
-            string templateStyle = "classic"
-        )
-        {
-            PersonalInfo = personalInfo;
-            Educations = educations ?? [];
-            Experiences = experiences ?? [];
-            Skills = skills ?? [];
-            Certifications = certifications ?? [];
-            TemplateStyle = templateStyle;
-        }
+        Work = [];
+        Volunteer = [];
+        Education = [];
+        Awards = [];
+        Certificates = [];
+        Publications = [];
+        Skills = [];
+        Languages = [];
+        Interests = [];
+        References = [];
+        Projects = [];
     }
 }
