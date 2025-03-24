@@ -1,11 +1,15 @@
+using ResumeCreatorAPI.Domain;
+
 namespace ResumeCreatorAPI.Infrastructure.Services
 {
     public class TemplateService : ITemplateService
     {
-        public string GenerateTemplate(string? templateStyle)
+        public async Task<string> GenerateResumeFromTemplate(string templatePath, Resume resume)
         {
-            return templateStyle ?? "default-template";
-        }
+            var templateContent = await File.ReadAllTextAsync(templatePath);
+            var filledTemplate = templateContent.Replace("{{Name}}", resume.PersonalInfo!.Name).Replace("{{Email}}", resume.PersonalInfo.Email);
 
+            return filledTemplate;
+        }
     }
 }

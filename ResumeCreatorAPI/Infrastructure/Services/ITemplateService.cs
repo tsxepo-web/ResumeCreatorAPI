@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ResumeCreatorAPI.Domain;
 
 namespace ResumeCreatorAPI.Infrastructure.Services
 {
     public interface ITemplateService
     {
-        string GenerateTemplate(string templateStyle);
+        Task<string> GenerateResumeFromTemplate(string templatePath, Resume resume);
     }
 }

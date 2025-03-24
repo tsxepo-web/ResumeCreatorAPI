@@ -1,5 +1,5 @@
 using MediatR;
-using Microsoft.AspNetCore.Identity;
+using MongoDB.Driver;
 using ResumeCreatorAPI.Features.Resume.CreateResume;
 using ResumeCreatorAPI.Infrastructure.Services;
 
@@ -9,23 +9,29 @@ namespace ResumeCreatorAPI.Features.Resume.Commands
     {
         private readonly IResumeRepository _resumeRepository;
         private readonly ITemplateService _templateService;
-        public CreateResumeHandler(IResumeRepository resumeRepository, ITemplateService templateService)
+        private readonly ILogger<CreateResumeHandler> _logger;
+
+        public CreateResumeHandler(IResumeRepository resumeRepository, ITemplateService templateService, ILogger<CreateResumeHandler> logger)
         {
             _resumeRepository = resumeRepository;
             _templateService = templateService;
+            _logger = logger;
         }   
 
         public async Task<Domain.Resume> Handle(CreateResumeCommand request, CancellationToken cancellationToken)
         {
-            var resumeCount = await _resumeRepository.CountUserResumesAsync(request.UserId);
+            if (request.Resume == null || request == null)
+            {
+                throw new ArgumentNullException(nameof(request.Resume), "Resume cannot be null.");
+            }
+            var templatePath = Path.Combine("ResumeCreatorAPI", "Features", "Resume", "CreateResume", "Templates", "sample.tex");
+            var resumeContent = await _templateService.GenerateResumeFromTemplate(templatePath, request.Resume);
+            // var resume = new Domain.Resume { Content = resumeContent };
 
-        if (resumeCount >= 1)
-        {
-            return null!;
-        }
-        await _resumeRepository.AddResumeAsync(request.Resume, cancellationToken: cancellationToken);
+            await _resumeRepository.AddResumeAsync(request.Resume, cancellationToken);
 
-        return request.Resume;
+            return request.Resume;
+        
         }
     }
 

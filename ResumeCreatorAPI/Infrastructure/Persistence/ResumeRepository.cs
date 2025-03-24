@@ -15,12 +15,7 @@ namespace ResumeCreatorAPI.Infrastructure.Persistence
 
         public async Task AddResumeAsync(Resume resume, CancellationToken cancellationToken)
         {
-            await _resumeCollection.InsertOneAsync(resume, cancellationToken: cancellationToken);
-        }
-
-        public async Task<long> CountUserResumesAsync(string email)
-        {
-            return await _resumeCollection.CountDocumentsAsync(resume => resume.PersonalInfo.Email == email);
+            await _resumeCollection.InsertOneAsync(resume);
         }
     }
 }
