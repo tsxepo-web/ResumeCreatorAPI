@@ -25,12 +25,18 @@ namespace ResumeCreatorAPI.Infrastructure.Persistence
             }
             var filter = Builders<Resume>.Filter.Eq(r => r.Id, resume.Id);
             var update = Builders<Resume>.Update
-                .Set(r => r.PersonalInfo, resume.PersonalInfo)
-                .Set(r => r.Certifications, resume.Certifications)
-                .Set(r => r.Educations, resume.Educations)
-                .Set(r => r.Experiences, resume.Experiences)
+                 .Set(r => r.Basics, resume.Basics)
+                .Set(r => r.Work, resume.Work)
+                .Set(r => r.Volunteer, resume.Volunteer)
+                .Set(r => r.Education, resume.Education)
+                .Set(r => r.Awards, resume.Awards)
+                .Set(r => r.Certificates, resume.Certificates)
+                .Set(r => r.Publications, resume.Publications)
                 .Set(r => r.Skills, resume.Skills)
-                .Set(r => r.TemplateStyle, resume.TemplateStyle);
+                .Set(r => r.Languages, resume.Languages)
+                .Set(r => r.Interests, resume.Interests)
+                .Set(r => r.References, resume.References)
+                .Set(r => r.Projects, resume.Projects);
 
             var result = await _resumeCollection.UpdateOneAsync(filter, update, cancellationToken: cancellationToken);
             return result.ModifiedCount > 0;

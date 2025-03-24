@@ -8,9 +8,12 @@ namespace ResumeCreatorAPI.Features.Resume.UpdateResume
         public static void MapUpdateResumeEndpoint(IEndpointRouteBuilder endpoint)
         {
             endpoint.MapPut(
-                "api/resume/{id}", async ([FromRoute] string id, [FromBody] UpdateResumeCommand command, IMediator mediator) =>
+                "api/resume/{id}", async (
+                    [FromRoute] string id,
+                    [FromBody] UpdateResumeCommand command,
+                    IMediator mediator) =>
                 {
-                    if (id != command.Id)
+                    if (id != command.Resume.Id)
                     {
                         return Results.BadRequest("ID in the URL does not match ID in the request body.");
                     }
