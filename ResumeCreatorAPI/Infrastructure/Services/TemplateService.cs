@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using ResumeCreatorAPI.Domain;
 
 namespace ResumeCreatorAPI.Infrastructure.Services;
@@ -25,14 +26,17 @@ public class TemplateService : ITemplateService
         throw new FileNotFoundException($"Template {templateName} not found");
 
     }
-    public List<string> GetAllTemplatesAsync()
+    public async Task<List<string>> GetAllTemplatesAsync()
     {
         var templatePath = _configuration["TemplatesPath"];
         var directoryInfo = new DirectoryInfo(templatePath!);
 
-        var templates = directoryInfo.GetFiles("*.tex").Select(file => Path.GetFileNameWithoutExtension(file.Name)).ToList();
+        var templates = directoryInfo
+            .GetFiles("*.tex")
+            .Select(file => Path.GetFileNameWithoutExtension(file.Name))
+            .ToList();
 
-        return templates;
+        return await Task.FromResult(templates);
     }
 
     public async Task<string> RenderResumeToLatex(Resume resume, string templateName)

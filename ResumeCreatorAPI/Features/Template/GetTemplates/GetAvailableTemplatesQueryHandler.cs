@@ -14,7 +14,7 @@ public class GetAvailableTemplatesQueryHandler : IRequestHandler<GetAvailableTem
 
     public async Task<List<string>> Handle(GetAvailableTemplatesQuery request, CancellationToken cancellationToken)
     {
-        var allTemplates = _templateService.GetAllTemplatesAsync();
+        var allTemplates = await _templateService.GetAllTemplatesAsync();
         if (!string.IsNullOrEmpty(request.TemplateName))
         {
             var filteredTemplates = allTemplates

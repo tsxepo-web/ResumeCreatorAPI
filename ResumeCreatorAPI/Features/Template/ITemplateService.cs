@@ -6,6 +6,6 @@ namespace ResumeCreatorAPI.Infrastructure.Services
     {
         Task<string> LoadTemplate(string templateName);
         Task<string> RenderResumeToLatex(Resume resume, string templateName);
-        List<string> GetAllTemplatesAsync();
+        Task<List<string>> GetAllTemplatesAsync();
     }
 }
